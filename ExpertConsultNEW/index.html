@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpertConsult - Plateforme de Conseil d'Experts</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <!-- Cursor personnalisé -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Loader animé -->
+    <div class="page-loader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <img src="logo.jpg" alt="ExpertConsult">
+            </div>
+            <div class="loader-spinner"></div>
+            <p>Chargement de votre expérience...</p>
+        </div>
+    </div>
+
+    <!-- Chatbot flottant -->
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-button" id="chatbotToggle">
+            <i class="fas fa-comments"></i>
+            <span class="chatbot-badge">1</span>
+        </div>
+        
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div class="chatbot-avatar">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Assistant">
+                    <span class="status-dot"></span>
+                </div>
+                <div class="chatbot-info">
+                    <h4>Sophie - Assistante</h4>
+                    <p>En ligne</p>
+                </div>
+                <button class="chatbot-close" id="chatbotClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="bot-message">
+                    <div class="message-avatar">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Bot">
+                    </div>
+                    <div class="message-content">
+                        <p>Bonjour ! 👋 Je suis Sophie, votre assistante virtuelle. Comment puis-je vous aider aujourd'hui ?</p>
+                        <span class="message-time">À l'instant</span>
+                    </div>
+                </div>
+                
+                <div class="quick-replies">
+                    <button class="quick-reply" data-message="Je veux une consultation gratuite">💼 Consultation gratuite</button>
+                    <button class="quick-reply" data-message="Quels sont vos services ?">🎯 Vos services</button>
+                    <button class="quick-reply" data-message="Comment ça fonctionne ?">❓ Comment ça marche</button>
+                    <button class="quick-reply" data-message="Vos tarifs">💰 Tarifs</button>
+                </div>
+            </div>
+            
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Écrivez votre message...">
+                <button id="chatbotSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <img src="logo.jpg" alt="ExpertConsult Logo" class="logo-img">
+                <span class="logo-text">ExpertConsult</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">Accueil</a></li>
+                <li><a href="#about" class="nav-link">À propos</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#experts" class="nav-link">Experts</a></li>
+                <li><a href="#testimonials" class="nav-link">Témoignages</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <a href="#contact" class="btn btn-primary">
+                <span>Consultation Gratuite</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="home">
+        <canvas id="particlesCanvas"></canvas>
+        <div class="overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <i class="fas fa-star"></i>
+                    <span>Plateforme N°1 de Conseil Expert</span>
+                </div>
+                <h1>Obtenez de l'aide auprès de <span class="gradient-text typing-effect">consultants experts</span>.</h1>
+                <p>Nous aidons les entreprises à grandir en fournissant des stratégies marketing et des conseils d'experts pour booster votre activité.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary btn-glow">
+                        <span>Prendre rendez-vous</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#services" class="btn btn-secondary">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Découvrir nos services</span>
+                    </a>
+                </div>
+                
+                <div class="trusted-by">
+                    <p>Ils nous font confiance :</p>
+                    <div class="client-logos">
+                        <div class="logo-item"><i class="fab fa-amazon"></i></div>
+                        <div class="logo-item"><i class="fab fa-google"></i></div>
+                        <div class="logo-item"><i class="fab fa-microsoft"></i></div>
+                        <div class="logo-item"><i class="fab fa-meta"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="mouse"><div class="wheel"></div></div>
+            <p>Scroll</p>
+        </div>
+    </header>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="container stats-container">
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <h3><span class="counter" data-target="1000000">0</span>+</h3>
+                <p>Clients satisfaits</p>
+                <div class="stat-progress"><div class="progress-bar"></div></div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                <h3><span class="counter" data-target="93">0</span>%</h3>
+                <p>Taux de réussite</p>
+                <div class="stat-progress"><div class="progress-bar"></div></div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                <h3><span class="counter" data-target="4.9">0</span>/5</h3>
+                <p>Note moyenne</p>
+                <div class="stat-progress"><div class="progress-bar"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Nos Services</span>
+                <h2>Services que nous <span class="gradient-text">offrons</span></h2>
+                <p>Nous créons des stratégies uniques pour vous aider à construire votre marque.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Marketing Digital">
+                        <div class="service-overlay"><i class="fas fa-bullhorn"></i></div>
+                    </div>
+                    <div class="service-info">
+                        <h4>Marketing Digital</h4>
+                        <p>Stratégies marketing innovantes pour maximiser votre présence en ligne</p>
+                        <a href="#" class="service-link"><span>En savoir plus</span><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Rédaction">
+                        <div class="service-overlay"><i class="fas fa-pen-fancy"></i></div>
+                    </div>
+                    <div class="service-info">
+                        <h4>Rédaction de contenu</h4>
+                        <p>Contenus engageants et optimisés pour captiver votre audience</p>
+                        <a href="#" class="service-link"><span>En savoir plus</span><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Design">
+                        <div class="service-overlay"><i class="fas fa-palette"></i></div>
+                    </div>
+                    <div class="service-info">
+                        <h4>Design Graphique</h4>
+                        <p>Créations visuelles impactantes pour renforcer votre identité de marque</p>
+                        <a href="#" class="service-link"><span>En savoir plus</span><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="SEO">
+                        <div class="service-overlay"><i class="fas fa-search"></i></div>
+                    </div>
+                    <div class="service-info">
+                        <h4>SEO pour Entreprise</h4>
+                        <p>Optimisation de votre visibilité sur les moteurs de recherche</p>
+                        <a href="#" class="service-link"><span>En savoir plus</span><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-us" id="about">
+        <div class="container why-us-container">
+            <div class="video-wrapper">
+                <video id="presentationVideo" width="100%" poster="Capture d'écran 2025-11-30 124107.png">
+                    <source src="Qu'est-ce que le conseil en stratégie.mp4" type="video/mp4">
+                </video>
+                <div class="play-btn" id="playBtn"><i class="fas fa-play"></i></div>
+                <div class="video-overlay"></div>
+            </div>
+
+            <div class="why-content">
+                <span class="section-badge">Pourquoi Nous</span>
+                <h2>Pourquoi nous <span class="gradient-text">choisir</span> ?</h2>
+                <p>Nous élaborons des stratégies sur mesure pour développer facilement votre entreprise.</p>
+                <ul class="features-list">
+                    <li>
+                        <div class="icon-box"><i class="fas fa-calendar-check"></i></div>
+                        <div>
+                            <h4>Réservation Facile</h4>
+                            <p>Processus simple et rapide pour planifier votre consultation</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="icon-box"><i class="fas fa-user-tie"></i></div>
+                        <div>
+                            <h4>Avis d'expert gratuit</h4>
+                            <p>Première consultation offerte pour tous nos nouveaux clients</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+                        <div>
+                            <h4>Obtenez vos résultats</h4>
+                            <p>Résultats mesurables et stratégies éprouvées pour votre succès</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experts -->
+    <section class="experts-section" id="experts">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Notre Équipe</span>
+                <h2>Rencontrez nos <span class="gradient-text">experts</span></h2>
+                <p>Des professionnels certifiés prêts à vous accompagner vers le succès</p>
+            </div>
+            
+            <div class="experts-grid">
+                <div class="expert-card">
+                    <div class="expert-image">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Expert">
+                        <div class="expert-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="expert-info">
+                        <h4>Alexandre Martin</h4>
+                        <p>Expert Marketing Digital</p>
+                        <div class="expert-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span>5.0</span>
+                        </div>
+                        <button class="btn btn-outline">Consulter</button>
+                    </div>
+                </div>
+                
+                <div class="expert-card">
+                    <div class="expert-image">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Expert">
+                        <div class="expert-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="expert-info">
+                        <h4>Sophie Dubois</h4>
+                        <p>Stratège de Contenu</p>
+                        <div class="expert-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span>4.9</span>
+                        </div>
+                        <button class="btn btn-outline">Consulter</button>
+                    </div>
+                </div>
+                
+                <div class="expert-card">
+                    <div class="expert-image">
+                        <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Expert">
+                        <div class="expert-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="expert-info">
+                        <h4>Thomas Leroy</h4>
+                        <p>Expert SEO & Analytics</p>
+                        <div class="expert-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span>4.8</span>
+                        </div>
+                        <button class="btn btn-outline">Consulter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Purple Banner -->
+    <div class="purple-banner">
+        <div class="container">
+            <p><span class="badge">Nouveau</span> Découvrez notre nouveau programme de formation exclusive. <a href="#">En savoir plus <i class="fas fa-arrow-right"></i></a></p>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Témoignages</span>
+                <h2>Ce que disent nos <span class="gradient-text">clients</span></h2>
+                <p>Des retours authentiques de professionnels qui nous font confiance</p>
+            </div>
+            
+            <div class="testimonials-slider">
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="brand-logo"><i class="fab fa-amazon"></i></div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="quote">"Vous avez rendu cela si simple. Mon nouveau site est beaucoup plus rapide et c'est facile de travailler avec ExpertConsult."</p>
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client">
+                            <div>
+                                <h5>Ilya Vasile</h5>
+                                <span>Ingénieur Logiciel chez Amazon</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="brand-logo"><i class="fab fa-google"></i></div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="quote">"Une équipe exceptionnelle qui comprend vraiment les besoins de mon entreprise. Résultats au-delà des attentes !"</p>
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client">
+                            <div>
+                                <h5>Mariana Perez</h5>
+                                <span>Designer Produit chez Google</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="brand-logo"><i class="fab fa-microsoft"></i></div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="quote">"L'équipe a été incroyable, fournissant des solutions expertes qui ont transformé notre stratégie digitale."</p>
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Client">
+                            <div>
+                                <h5>Clim Tomson</h5>
+                                <span>Directeur Technique chez Microsoft</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-section" id="contact">
+        <div class="container contact-container">
+            <div class="contact-text">
+                <div class="chat-icon"><i class="fas fa-comments"></i></div>
+                <h2>Obtenez une consultation gratuite de nos experts dès maintenant !</h2>
+                <p>Nous élaborons des stratégies uniques pour vous aider à construire votre marque et développer votre entreprise rapidement.</p>
+                
+                <div class="contact-info-list">
+                    <div class="contact-info-item">
+                        <i class="fas fa-phone"></i>
+                        <div><h4>Téléphone</h4><p>+33 1 23 45 67 89</p></div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div><h4>Email</h4><p>contact@expertconsult.fr</p></div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div><h4>Adresse</h4><p>123 Avenue des Champs-Élysées, Paris</p></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form-wrapper">
+                <form id="consultationForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nom complet</label>
+                            <input type="text" id="name" placeholder="Jean Dupont" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="jean@exemple.fr" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Téléphone</label>
+                            <input type="tel" id="phone" placeholder="+33 6 12 34 56 78">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Entreprise</label>
+                            <input type="text" id="company" placeholder="Votre entreprise">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Quel est votre projet ?</label>
+                        <select id="subject" required>
+                            <option value="">Sélectionnez un service</option>
+                            <option value="marketing">Marketing Digital</option>
+                            <option value="seo">SEO & Référencement</option>
+                            <option value="design">Design & Branding</option>
+                            <option value="strategy">Stratégie Digitale</option>
+                            <option value="content">Création de Contenu</option>
+                            <option value="other">Autre</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message (optionnel)</label>
+                        <textarea id="message" rows="4" placeholder="Décrivez brièvement votre besoin..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary full-width">
+                        <span>Confirmer ma consultation</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="map-section">
+            <div id="map"></div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <div class="newsletter-section">
+        <div class="container newsletter-container">
+            <div class="newsletter-content">
+                <div class="newsletter-icon"><i class="fas fa-envelope-open-text"></i></div>
+                <div>
+                    <h3>Restez informé de nos actualités</h3>
+                    <p>Recevez nos conseils d'experts et nos dernières nouveautés</p>
+                </div>
+            </div>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Votre adresse email" required>
+                <button type="submit" class="btn btn-primary">
+                    <span>S'abonner</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <img src="logo.jpg" alt="ExpertConsult">
+                    <span>ExpertConsult</span>
+                </div>
+                <p>Votre partenaire de confiance pour propulser votre entreprise vers le succès grâce à des stratégies digitales innovantes.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Société</h4>
+                    <ul>
+                        <li><a href="#about">À propos</a></li>
+                        <li><a href="#experts">Notre équipe</a></li>
+                        <li><a href="#">Carrières</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Marketing Digital</a></li>
+                        <li><a href="#">Rédaction de contenu</a></li>
+                        <li><a href="#">Design Graphique</a></li>
+                        <li><a href="#">SEO</a></li>
+                        <li><a href="#">Stratégie Web</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Ressources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Études de cas</a></li>
+                        <li><a href="#">Guides</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">Conditions</a></li>
+                        <li><a href="#">Confidentialité</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container copyright">
+            <p>&copy; 2024 ExpertConsult. Tous droits réservés.</p>
+            <p>Conçu avec <i class="fas fa-heart"></i> à Paris</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
